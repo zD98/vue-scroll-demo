@@ -1,35 +1,32 @@
 <template>
-    <div class="list" v-scroll="{methods:{scrolling: onScrolling, afterScroll: onAfterScroll}}">
-    	<item v-for="(item, index) in items" :info="item" :index="index" ></item>
+    <div class="list" v-alloytouch="{}">
+        <item v-for="(item, index) in items" :info="item" :index="index" ></item>
     </div>
 </template>
 
 <script>
-
-import Item from './Item';
+import Item from './Item.vue'
 import data from '../store/mock';
+
 export default {
-    components:{
-        Item
-    },
-    data(){
-    	return {
-            items:[],
-            itemHeight: 96
-    	}
-    },
-    props:{
 
+  name: 'AlloyList',
+  components: {
+    Item
+    },
+    data () {
+        return {
 
+        };
     },
     created(){
         this.updateItems();
     },
     methods:{
-    	onTap(){
+        onTap(){
 
 
-    	},
+        },
         onScrolling(){
             // console.log('onScroll')
         },
@@ -59,12 +56,8 @@ export default {
             return p;
         }
     }
-
-}
+};
 </script>
-<style>
-.list {
 
-	
-}
+<style lang="less">
 </style>
