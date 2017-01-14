@@ -1,6 +1,15 @@
 <template>
-    <div class="list" v-alloytouch="{}">
-        <item v-for="(item, index) in items" :info="item" :index="index" ></item>
+    <div class="list" v-alloytouch="{
+            options: options,
+            methods: {
+                change
+            },
+            min
+        }">
+        <div class="items-wrap alloytouch-target">
+            <item v-for="(item, index) in items" :info="item" :index="index" ></item>
+            <div class="loading">正在加载中，请稍候...</div>
+        </div>
     </div>
 </template>
 
@@ -16,23 +25,28 @@ export default {
     },
     data () {
         return {
-
+            items: [],
+            options: {
+                touch:"",//dom for touching
+                target: '.alloytouch-target', //dom for transform
+                vertical: true,
+                property: "translateY",  
+                sensitivity: 1,
+                factor: 1,
+            },
+            min: 0
         };
     },
     created(){
         this.updateItems();
     },
     methods:{
-        onTap(){
-
-
+        change(y){
+            console.log(y)
         },
-        onScrolling(){
-            // console.log('onScroll')
-        },
-        onAfterScroll({scrollY}){
+        onAfterScroll({y}){
             var screenHeight = window.innerHeight;
-            if(scrollY > (this.items.length * this.itemHeight - 2 * screenHeight)){
+            if(-y > (this.items.length * 96 - 2 * screenHeight)){
                 //提前一屏加载数据
                 this.updateItems();
             }
@@ -43,6 +57,8 @@ export default {
             .then((data)=>{
                 // this.items.push.apply(this.items,data);
                 this.items = this.items.concat(data);
+                this.min = -(this.items.length * 96 - window.innerHeight + 60);
+
             }).catch((err)=>{
 
             });
@@ -60,4 +76,8 @@ export default {
 </script>
 
 <style lang="less">
+.loading {
+   text-align: center; 
+   padding: 20px 0;
+}
 </style>

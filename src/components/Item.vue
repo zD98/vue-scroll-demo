@@ -34,7 +34,7 @@ export default {
 
     .content{
         padding: 24px 0 0 12px;
-        border-bottom: 1px solid #777;
+        border-bottom: 1px solid #ccc;
         flex: 1;
         display: flex;
         flex-direction: column;

@@ -1,10 +1,11 @@
 ;(function(){
 var AlloyTouch = typeof require === 'function'
-    ? require('../alloy_touch.js')
+    ? require('alloytouch')
     : window.AlloyTouch
 var Transform = typeof require === 'function'
-    ? require('../transformjs/transform.js')
+    ? require('css3transform')
     : window.Transform
+    //transform没有加包引入
 
 let vueAlloyTouch = {};
 
@@ -29,15 +30,17 @@ vueAlloyTouch.install = function(Vue){
                 //注册时的赋值 value, el已经挂载
                 var options = getAlloyTouchConfig(el, binding.value);
                 Transform(options.target);
+                console.log(options)
                 el.__alloytouch__handle = new AlloyTouch(options);
+                console.log(el.__alloytouch__handle)
             },
             update: function (el, binding) {
                 var value = binding.value;
                 if(!el.__alloytouch__handle) {
                     return;
                 }
-                el.__alloytouch__handle.min = value.min;
-                el.__alloytouch__handle.max = value.max;
+                el.__alloytouch__handle.min = _getOption(value.min, 0);
+                el.__alloytouch__handle.max = _getOption(value.max, 0);
             },
             unbind: function(el){
                 el.__alloytouch__handle = null;
@@ -55,8 +58,9 @@ vueAlloyTouch.install = function(Vue){
                     Transform(options.target);
                     this.el.__alloytouch__handle = new AlloyTouch(options);
                 }else {
-                    this.el.__alloytouch__handle.min = binding.min;
-                    this.el.__alloytouch__handle.max = binding.max; 
+                    console.log(binding)
+                    this.el.__alloytouch__handle.min = _getOption(binding.min, 0);
+                    this.el.__alloytouch__handle.max = _getOption(binding.max, 0); 
                 }
             },
            unbind: function(){
@@ -87,7 +91,7 @@ vueAlloyTouch.install = function(Vue){
             sensitivity: _getOption(options.sensitivity, 1),//不必需,触摸区域的灵敏度，默认值为1，可以为负数
             factor: _getOption(options.factor, 1),//不必需,表示触摸位移与被运动属性映射关系，默认值是1
             spring: _getOption(options.spring, 1), //不必需,是否有回弹效果。默认是true
-            step: _getOption(options.step, 45),//用于校正到step的整数倍
+            step: _getOption(options.step, undefined),//用于校正到step的整数倍
             change : methods.change || noop,
             touchEnd : methods.touchEnd || noop,
             touchStart : methods.touchStart || noop,

@@ -54,12 +54,12 @@
                 })
                 window.addEventListener('scroll', onScrolling);
                 window.addEventListener('scroll', onAfterScroll);
-                // var last = 0;
-                // window.addEventListener('scroll', function(){
-                //     var now = +new Date();
-                //     console.log('scroll', now-last);
-                //     last = now;
-                // })
+                var last = 0;
+                window.addEventListener('scroll', function(){
+                    var now = +new Date();
+                    console.log('scroll', now-last, window.scrollY);
+                    last = now;
+                })
             },
             update: function(){
 
